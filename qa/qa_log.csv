@@ -1,0 +1,41 @@
+"Section 1: Automated checks (all 150 images, 152 boxes)"
+Check,Result
+Wrong label (label vs filename class),0 errors
+Missing box,0
+Duplicate box (IoU > 70%),0
+Very small box (< 2% of image),0
+Near-full-image box (>= 97% of image),14 flagged for manual review
+
+Section 2: Review of 14 flagged boxes
+Image,Result
+yorkshire_terrier_59.jpg,OK - animal fills frame (close-up)
+pomeranian_128.jpg,Fixed - see Section 3
+keeshond_32.jpg,OK - animal fills frame (close-up)
+keeshond_182.jpg,OK - animal fills frame (close-up)
+Sphynx_14.jpg,OK - animal fills frame (close-up)
+Siamese_232.jpg,OK - animal fills frame (close-up)
+Persian_255.jpg,OK - animal fills frame (close-up)
+Persian_121.jpg,OK - animal fills frame (close-up)
+Persian_195.jpg,OK - animal fills frame (close-up)
+Persian_100.jpg,OK - animal fills frame (close-up)
+Egyptian_Mau_109.jpg,OK - animal fills frame (close-up)
+Bombay_59.jpg,OK - animal fills frame (close-up)
+Birman_68.jpg,OK - animal fills frame (close-up)
+Birman_53.jpg,OK - animal fills frame (close-up)
+
+Section 3: Manual re-review of all 150 images against guideline v1.1
+Image,Class,Error type,What was wrong,Fixed?
+yorkshire_terrier_34.jpg,dog,Loose box,"Extra background on left, right sides",Yes
+wheaten_terrier_108.jpg,dog,Loose box,Extra background on top side,Yes
+scottish_terrier_133.jpg,dog,Loose box,Extra background on right side,Yes
+scottish_terrier_140.jpg,dog,Loose box,"Extra background on left, right sides",Yes
+saint_bernard_4.jpg,dog,Loose box,"Extra background on top, right sides",Yes
+saint_bernard_51.jpg,dog,Loose box,Extra background on top side,Yes
+pomeranian_128.jpg,dog,Loose box,"Extra background on left, right sides",Yes
+newfoundland_145.jpg,dog,Loose box,"Extra background on left, top sides",Yes
+keeshond_162.jpg,dog,Loose box,Extra background on top side,Yes
+Ragdoll_7.jpg,cat,Loose box,Extra background on top side,Yes
+Ragdoll_8.jpg,cat,Loose box,Box extended to whiskers on right side,Yes
+Ragdoll_8.jpg,cat,Loose box,Extra background on bottom side,Yes
+
+Summary,Boxes corrected: 12 of 152 (7.9%); images corrected: 11 of 150; label errors: 0
