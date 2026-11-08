@@ -14,6 +14,7 @@ A bounding-box image annotation project built in **Label Studio**. I labeled a b
 | Label errors (automated check, 152 boxes) | 0 |
 | Boxes corrected in manual review | 12 of 152 (7.9%), across 11 images |
 | Guideline version | v1.1 |
+| YOLOv8n trained on these labels (30-image val set) | mAP@50 0.96, mAP@50-95 0.68 |
 
 ## Task
 
@@ -70,6 +71,27 @@ The full guidelines are in [`guidelines/annotation_guidelines_v1.1.pdf`](guideli
 
 Every correction is listed in [`qa/qa_log.csv`](qa/).
 
+## Label Validation: YOLOv8 Training
+
+To check that the labels can actually be used for training, I fine-tuned a **YOLOv8n** model (pretrained on COCO) on this dataset in Google Colab. The notebook is [`training/pet_detection_yolov8.ipynb`](training/).
+
+- **Split:** 120 train / 30 val images (random, seed 42)
+- **Training:** 50 epochs, image size 640, T4 GPU
+
+| Metric (val) | Score |
+|---|---|
+| mAP@50 | 0.959 |
+| mAP@50-95 | 0.678 |
+| Precision | 0.933 |
+| Recall | 0.935 |
+
+**Notes**
+- COCO already includes cat and dog, so a high mAP@50 is expected. The result mainly shows that the boxes and class labels are consistent enough to train on, not that the model is novel.
+- Out of 31 validation boxes, the model confused 1 dog for a cat. It also missed the second, partly hidden cat in `Ragdoll_199`, which is one of the overlapping-animal cases from the guidelines.
+- With only 30 validation images, these scores are a rough sanity check, not a benchmark.
+
+![Predictions on validation images](training/val_batch0_pred.jpg)
+
 ## Repository Structure
 
 ```
@@ -83,6 +105,7 @@ pet-detection-annotation/
 ├── qa/
 │   ├── qa_check.py
 │   └── qa_log.csv
+├── training/          # YOLOv8 Colab notebook + results
 └── screenshots/       # sample labeled images
 ```
 
@@ -91,4 +114,5 @@ pet-detection-annotation/
 - Writing the guideline before labeling saved time, and updating it as edge cases came up kept the labels consistent.
 - Automated checks catch label and structure errors fast, but box tightness still needs human review: the manual pass found 12 loose boxes that no automated check flagged.
 - When the guideline changes, earlier labels need to be re-checked against the new rules.
+- Training a quick model on the labels is a cheap end-to-end check that the dataset is usable.
 - The filename convention of the source dataset gives a free ground truth for checking class labels.
